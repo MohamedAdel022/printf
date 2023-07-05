@@ -1,92 +1,70 @@
-# Printf.
-```` c
-int printf ( const char * format, ... );
-````
-This is the first group project that we have at Holberton School, which consists of replicating the **[printf (3)](http://man7.org/linux/man-pages/man3/printf.3.html)** function of language c, calling it this way **_printf.**
+# _printf
+The _printf function is a custom implementation of the C programming function printf. It returns the number of characters printed and writes the output to stdout. It includes the conversion specifiers :  c, s, %, d, x, X, u, o, rot13 and i.
 
-This function is part of the standard library **<cstdio>** and to use it we must specify the header file **<stdio.h>**.
-
-Writes the C string pointed by format to the standard output **(stdout)**. If format includes format specifiers (subsequences beginning with **%**), the additional arguments following format are formatted and inserted in the resulting string replacing their respective specifiers.
-### Parameters
- > **format** -> C string that contains the text to be written to stdout.
- 
-Where the specifier character at the end is the most significant component, since it defines the type and the interpretation of its corresponding argument:
- Specifier | Output | Example
------------- | ------------- |-----------
- c | Character | A
- s | String of characters | Holberton
- % | A % followed by another % character will write a single % to the stream| %
-  i and d | Signed decimal integer | 98 
- b | Unsigned binary | 10101
- u | Unsigned decimal integer | 98
- o | Unsigned octal | 5523
- x | Unsigned hexadecimal integer (lowercase) | 36264eb
- X | Unsigned hexadecimal integer (uppercase) | 36264EB
- r | Reversed string | gnirts |
- R | Rot13 string | cevags
-##### Return Value.
-On **success**, the **total number** of characters written is returned.
-If a writing error occurs, the error indicator (ferror) is set and a negative number is returned.
- 
-## The tasks.
--[x] **I'm not going anywhere. You can print that wherever you want to. I'm here and I'm a Spur for life.** 
-Write a function that produces output according to a format.
-
-- Prototype:``int _printf(const char *format, ...);``
-- Returns: the number of characters printed (excluding the null byte used to end output to strings)
-- write output to stdout, the standard output stream
-- format is a character string. The format string is composed of zero or more directives. See man 3 printf for more detail. You need to handle the following conversion specifiers:
--- ``c``
--- ``s``
---  ``%``
-
- -[x] **Education is when you read the fine print. Experience is what you get if you don't**
-Handle the following conversion specifiers:
--- ``d``
---``i``
-### [Man_3_printf.](https://photos.app.goo.gl/pY1W7jWLFGHLPa3S6)
-## Functions we use.
-
-````c
-int _putchar(char c); /*writes the character c to stdout */
-int _printf(const char *format, ...);/* function that produces output according to a format.*/
-int print_char(va_list c);/*writes the character c to stdout */
-int print_string(va_list s);/*writes the character c to stdout */
-int print_int(va_list i);/*function that prints an integer */
-int print_dec(va_list d);/* function that prints an decimal*/
-````
-## [Flowchart.](https://photos.app.goo.gl/5SQMnxrmd7nkLr3a6)
-## How to use.
-### Complilation
-All of the ``.c`` files along with a main.c file are to be compiled with ``gcc 4.8.4`` on Ubuntu 14.04 LTS with the flags ``-Wall Werror`` ``-Westra`` and ``-pedantic.``
-
-The files will be compiled this way:
-- ``gcc -Wall -Werror -Wextra -pedantic *.c``
-#### Use.
-In the ``main.c`` file, use the ``_printf`` function like so:
+## Example
 ```c
 #include "holberton.h"
-/**
- * main - main function of program
- * Return: always 0
- */
-int main(void)
-{
-	int num;
-	char *string;
-	
-	num = 98;
-	string = "Hello, Holberon!"
-	_printf("%s is %i.\n", string, num);
-	return (0);
-}
+_printf("The %s jumped %d times! -%c", "dog", 7, 'C');
 ```
-```{bash}
-linux>$  gcc -Wall -Werror -Wextra -pedantic *.c -o print_program
-linux>$  ./print_program
-Hello, Holberton is 98.
-linux>$
-```
-## Contributors
-- [Miguel Palacios](https://github.com/MiguelP4lacios)
-- [Daniela Lopera](https://github.com/danielaloperahernandez)
+output : The dog jumped 7 times! -C
+
+## Project Requirements
+- All files will be compiled on Ubuntu 14.04 LTS
+- Your programs and functions will be compiled with gcc 4.8.4 using the flags -Wall -Werror -Wextra and -pedantic
+- Your code should use the Betty style
+- You are not allowed to use global variables
+- Authorized functions and macros:
+- write (man 2 write)
+- malloc (man 3 malloc)
+- free (man 3 free)
+- va_start (man 3 va_start)
+- va_end (man 3 va_end)
+- va_copy (man 3 va_copy)
+- va_arg (man 3 va_arg)
+
+# Custom printf function
+
+## Files and functions
+* **_putchar.c**:
+  * int _putchar(char c) - function to print char
+
+* **_strlen.c**:
+  * int _strlen(char *string) - gets string length
+
+* **get_bin.c**:
+  * int _bin(va_list bin) - function to print binary
+
+* **get_char.c**:
+  * int ch(va_list character) - function to return char
+
+* **get_hex.c**:
+  * int _hex_str(unsigned int n, unsigned int hex, char alpha) - converts the number from base 10 to hex
+
+* **get_int.c**:
+  * int _int(va_list integ) - function to print integers
+
+* **get_oct.c**:
+  * int _oct(va_list octo) - function to print octal
+
+* **get_rot13.c**:
+  * int _rot13(va_list rot) - prints rot13 version
+
+* **get_str.c**:
+  * int str(va_list *s) - prints string to stdout
+
+* **get_unsigned.c**:
+  * int _ui(va_list unsign) - unsigned int print to stdout
+
+* **holberton.h**: header file
+
+* **man_3_printf**: _printf man page
+
+* **printf.c**: main custom _printf function
+  * int print_op(const char *format, fmt_t *print_arr, va_list list) - function to check which specifier to print
+  * int _printf(const char *format, ...) - prints output according to format
+
+### Notes
+Our program does not handle buffer handling, flag characters, field width, precision, or length modifiers.
+
+### Authors
+Mitali Sengupta and Omar Contreras

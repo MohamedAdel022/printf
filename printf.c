@@ -1,47 +1,76 @@
-#include "main.h"
-#include <unistd.h>
+#include "holberton.h"
+#include "holberton.h"
+
 /**
- * _printf - Emulate the original.
- *
- * @format: Format by specifier.
- *
- * Return: count of chars.
+ * print_op - function to check which specifier to print
+ * @format: string being passed
+ * @print_arr: array of struct ops
+ * @list: list of arguments to print
+ * Return: numb of char to be printed
+ */
+int print_op(const char *format, fmt_t *print_arr, va_list list)
+{
+	char a;
+	int count = 0, b = 0, c = 0;
+
+	a = format[b];
+	while (a != '\0')
+	{
+		if (a == '%')
+		{
+			c = 0;
+			b++;
+			a = format[b];
+			while (print_arr[c].type != NULL &&
+			       a != *(print_arr[c].type))
+				c++;
+			if (print_arr[c].type != NULL)
+				count = count + print_arr[c].f(list);
+			else
+			{
+				if (a == '\0')
+					return (-1);
+				if (a != '%')
+					count += _putchar('%');
+				count += _putchar(a);
+			}
+		}
+		else
+			count += _putchar(a);
+		b++;
+		a = format[b];
+	}
+	return (count);
+}
+
+/**
+ * _printf - prints output according to format
+ * @format: string being passed
+ * Return: char to be printed
  */
 int _printf(const char *format, ...)
 {
-	int i = 0, count = 0, count_fun;
-	va_list args;
+	va_list list;
+	int a = 0;
 
-	va_start(args, format);
-	if (!format || (format[0] == '%' && !format[1]))
+	fmt_t ops[] = {
+		{"c", ch},
+		{"s", str},
+		{"d", _int},
+		{"b", _bin},
+		{"i", _int},
+		{"u", _ui},
+		{"o", _oct},
+		{"x", _hex_l},
+		{"X", _hex_u},
+		{"R", _rot13},
+		{NULL, NULL}
+	};
+
+	if (format == NULL)
 		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-	while (format[i])
-	{
-		count_fun = 0;
-		if (format[i] == '%')
-		{
-			if (!format[i + 1] || (format[i + 1] == ' ' && !format[i + 2]))
-			{
-				count = -1;
-				break;
-			}
-			count_fun += get_function(format[i + 1], args);
-			if (count_fun == 0)
-				count += _putchar(format[i + 1]);
-			if (count_fun == -1)
-				count = -1;
-			i++;
-		}
-		else
-		{
-			(count == -1) ? (_putchar(format[i])) : (count += _putchar(format[i]));
-		}
-		i++;
-		if (count != -1)
-			count += count_fun;
-	}
-	va_end(args);
-	return (count);
+	va_start(list, format);
+	a = print_op(format, ops, list);
+	va_end(list);
+	return (a);
 }
